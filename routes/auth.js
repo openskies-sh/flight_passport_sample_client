@@ -43,11 +43,12 @@ router.get('/logout', (req, res) => {
   var logoutURL = new url.URL(
     util.format('http://%s/o/revoke_token', process.env.OAUTH_DOMAIN)
   );
+
   var searchString = querystring.stringify({
     client_id: process.env.OAUTH_CLIENT_ID,
-    client_secret: process.env.OAUTH_CLIENT_SECRET,
     returnTo: returnTo
   });
+  
   logoutURL.search = searchString;
   req.session.destroy(() => res.redirect('/'));
   res.redirect(logoutURL);
