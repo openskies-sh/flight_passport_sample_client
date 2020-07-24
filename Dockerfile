@@ -2,9 +2,11 @@ FROM node:8.7-alpine
 
 WORKDIR /home/app
 
-ADD package.json /home/app
-RUN npm install
 ADD . /home/app
+
+RUN npm install
+# this can auto add the .env vars to the image
+# RUN export $(grep -v '^#' .env | xargs)
 
 CMD ["npm", "start"]
 
