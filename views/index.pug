@@ -3,6 +3,10 @@ extends layout
 block content
   .w3-container
     if locals.user
+      p
       h4 You are logged in!
     else
+      p
+      p This is a sample node client for #[a(href="https://github.com/openskies-sh/flight_passport") Flight Passport] OAUTH server. You can browse the code to see how a <mark>Authorization code</mark> grant would work. 
+      p
       h4 You are not logged in! Please #[a(href="/login") Log In] to continue.
