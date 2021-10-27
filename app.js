@@ -22,11 +22,11 @@ let strategy = new OAuth2Strategy({
   callbackURL: process.env.CALLBACK_URL,
   passReqToCallback: true,
 },
-  function (accessToken, refreshToken, params,userProfile, cb) {
+  function ( params,accessToken, refreshToken,userProfile, cb) {
+    console.log(accessToken, refreshToken);
     return cb(null, userProfile);
   }
 );
-
 strategy.userProfile = function (accesstoken, done) {
   // choose your own adventure, or use the Strategy's oauth client
   const headers = {
@@ -44,7 +44,6 @@ strategy.userProfile = function (accesstoken, done) {
     done(null, data);
   });
 };
-
 
 passport.use(strategy);
 
