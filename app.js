@@ -21,31 +21,29 @@ let strategy = new OAuth2Strategy({
   clientSecret: process.env.OAUTH_CLIENT_SECRET,
   callbackURL: process.env.CALLBACK_URL,
   passReqToCallback: true,
-}, function(accessToken, refreshToken, extraParams, profile, done) {
-    console.log(profile);
-    return done(null, profile);
+},
+  function ( params,accessToken, refreshToken,userProfile, cb) {
+    console.log(accessToken, refreshToken);
+    return cb(null, userProfile);
   }
 );
-
-// strategy.userProfile = function (accesstoken, done) {
-//   // choose your own adventure, or use the Strategy's oauth client
-//   console.log(accesstoken)
-//   const headers = {
-//     'User-Agent': 'request',
-//     'Authorization': 'Bearer ' + accesstoken,
-//   };
-//   this._oauth2._request("GET", process.env.USER_INFO_URL, headers, null, null, (err, data) => {
-//     if (err) { return done(err); }
-//     try {
-//       data = JSON.parse(data);
-//     }
-//     catch (e) {
-//       return done(e);
-//     }
-//     done(null, data);
-//   });
-// };
-
+strategy.userProfile = function (accesstoken, done) {
+  // choose your own adventure, or use the Strategy's oauth client
+  const headers = {
+    'User-Agent': 'request',
+    'Authorization': 'Bearer ' + accesstoken,
+  };
+  this._oauth2._request("GET", process.env.USER_INFO_URL, headers, null, null, (err, data) => {
+    if (err) { return done(err); }
+    try {
+      data = JSON.parse(data);
+    }
+    catch (e) {
+      return done(e);
+    }
+    done(null, data);
+  });
+};
 
 passport.use(strategy);
 
